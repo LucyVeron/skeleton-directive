@@ -1,16 +1,18 @@
-import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[appSkeleton]',
 })
-export class SkeletonDirective {
+export class SkeletonDirective implements OnInit {
+  @Input() loading: boolean | undefined;
+
   constructor(private renderer: Renderer2, private el: ElementRef) {}
 
-  @HostListener('mouseenter') onMouseEnter() {
-    this.renderer.addClass(this.el.nativeElement, 'skeleton');
-  }
-
-  @HostListener('mouseleave') onMouseLeave() {
-    this.renderer.removeClass(this.el.nativeElement, 'skeleton');
+  ngOnInit(): void {
+    if (this.loading) {
+      this.renderer.addClass(this.el.nativeElement, 'skeleton');
+    } else {
+      this.renderer.removeClass(this.el.nativeElement, 'skeleton');
+    }
   }
 }
